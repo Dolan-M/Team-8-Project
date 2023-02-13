@@ -46,7 +46,7 @@ def paint():
 @app.route("/profile", methods = ["GET","POST"])
 @login_required
 def profile():
-    form = DisplayNameForm()
+    form = ProfileEditForm()
     db = get_db()
     cursor = db.cursor()
     if form.validate_on_submit():
