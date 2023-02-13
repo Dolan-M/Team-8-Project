@@ -1,9 +1,12 @@
-from flask import Flask, render_template, url_for, redirect, request, jsonify, g, session, make_response
-from forms import RegistrationForm, LoginForm, DisplayNameForm
+from flask import Flask, render_template, url_for, redirect, request, g, session, make_response
+from forms import RegistrationForm, LoginForm, DisplayNameForm, PostForm
 from db import get_db, close_db
 from flask_session import Session
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
+import pymysql.cursors as cursors
+from datetime import datetime
+import json
 
 
 app = Flask(__name__)
@@ -123,7 +126,7 @@ def login():
         user = cursor.fetchone()
         if user is None:
             form.user_id.errors.append("Incorrect username or password")
-        elif not check_password_hash(user["password"],password):
+        elif not check_password_hash(user[2],password):
             form.password.errors.append("Incorrect username or password")
         else:
             session.clear()
@@ -138,3 +141,43 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for("index"))
+
+
+@app.route("/createpost")
+@login_required
+def createpost():
+    pass
+
+@app.route("/post")
+@login_required
+def post():
+    form = PostForm
+    if form.validate_on_submit():
+        db = get_db()
+        cursor = db.cursor(cursors.Cursor)
+
+        createEntity(db=db, cursor=cursor)
+        createdEntityID = getCreatedEntityID(cursor=cursor)
+        userID = getUserID(cursor=cursor)
+        now = datetime.now()
+        date = now.strftime("%d/%m/%Y")
+        time = now.strftime("%H:%M:%S")
+
+def createEntity(db, cursor):
+    createEntitySql = "INSERT INTO entity VALIUES ();"
+    cursor.execute(createEntitySql)
+    db.commit()
+    return
+    
+
+def getCreatedEntityID(cursor):
+    getEntityIDSql = "SELECT LAST_INSERT_ID();"
+    cursor.execute(getEntityIDSql)
+    return cursor.fetchone()[0]
+
+
+def getUserID(cursor):
+        getUserSql = """SELECT userID FROM users WHERE username = %s;""", (g.user)
+        cursor.execute(getUserSql)
+        return cursor.fetchone()[0]
+    

@@ -27,6 +27,7 @@ let save = document.getElementById("save");
 let fill = document.getElementById("fill");
 let fill_shape = document.getElementById("fill_shape");
 let undo = document.getElementById("undo");
+let post = document.getElementById("post");
 
 document.addEventListener("DOMContentLoaded", init, false);
 
@@ -68,6 +69,7 @@ function init() {
     clear.addEventListener("click", clearCanvas, false);
     save.addEventListener("click", saveImage, false);
     undo.addEventListener("click", erasePreviousStroke, false);
+    post.addEventListener("click", clearCanvas, false);
 
 
     draw();
@@ -200,4 +202,8 @@ function getPixel(imageData, x, y) {
       const offset = (y * imageData.width + x) * 4;
       console.log(imageData.data.slice(offset, offset + 4));
     }
+}
+
+function postImage() {
+
 }

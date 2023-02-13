@@ -17,3 +17,8 @@ class LoginForm(FlaskForm):
 class DisplayNameForm(FlaskForm):
     display_name = StringField("Display Name:",validators=[InputRequired(),Length(min=4,max=20)])
     submit = SubmitField("Submit")
+
+
+class PostForm(FlaskForm):
+    title = StringField("Title", validators=[InputRequired(), Length(max=50)])
+    submit = SubmitField("Post")
