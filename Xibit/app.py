@@ -148,9 +148,12 @@ def logout():
 def createpost():
     pass
 
-@app.route("/post")
+@app.route("/post", methods=['POST'])
 @login_required
 def post():
+    blobJson = request.get_json()
+    blob = json.loads(blobJson)
+    print(blob)
     form = PostForm
     if form.validate_on_submit():
         db = get_db()
