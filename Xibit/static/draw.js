@@ -69,7 +69,7 @@ function init() {
     clear.addEventListener("click", clearCanvas, false);
     save.addEventListener("click", saveImage, false);
     undo.addEventListener("click", erasePreviousStroke, false);
-    post.addEventListener("click", clearCanvas, false);
+    post.addEventListener("click", postImage, false);
 
 
     draw();
@@ -207,5 +207,14 @@ function getPixel(imageData, x, y) {
 }
 
 function postImage() {
+    canvas.toBlob(function(blob) {
+    console.log(blob);
+    $.ajax({
+        url:"/post",
+        type:"POST",
+        contentType: "application/json",
+        data: JSON.stringify(blob)}
+        );
+    });
 
 }
